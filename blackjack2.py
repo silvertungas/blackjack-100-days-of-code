@@ -31,12 +31,13 @@ def calculate_score():
             print("Computer wins")
             end_of_game = True
             return end_of_game
+
  
 
 def main():
+    dealcards(computer_cards, 2)
+    dealcards(user_cards, 2)
     while end_of_game == False:
-        dealcards(computer_cards, 2)
-        dealcards(user_cards, 2)
         print(f"You have: {user_cards}")
         print(f"Computer has: {computer_cards}")
         calculate_score()
