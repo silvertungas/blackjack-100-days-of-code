@@ -14,29 +14,43 @@ def calculate_score():
 
     if computer_total == 21:
         end_of_game == True
-        print("Computer has end_of_game!")
+        print("Computer blackjack!")
         return end_of_game
     elif user_total == 21:
         end_of_game = True
-        print("Player has end_of_game!")
+        print("Player has blackjack!")
         return end_of_game
     
     if user_total > 21:
-        if 11 in user_cards:
-            for i in range(0, len(user_cards)):
-                if user_cards[i] == 11:
-                    user_cards[i] == 1
-                    calculate_score()
-        else:
-            print("Computer wins")
-            end_of_game = True
-            return end_of_game
+        end_of_game = True
+        print("Bust!")
+        return end_of_game
+    
+    return user_total, computer_total
 
- 
+        # if 11 in user_cards:
+        #     for i in range(0, len(user_cards)):
+        #         if user_cards[i] == 11:
+        #             user_cards[i] == 1
+        #             calculate_score()
+        # else:
+        #     print("Computer wins")
+        #     end_of_game = True
+        #     return end_of_game
+
+def compare():
+    results = calculate_score()
+    user = results[0]
+    computer = results[1]
+    
+
+    
 
 def main():
     dealcards(computer_cards, 2)
     dealcards(user_cards, 2)
+    compare()
+    print(end_of_game)
     while end_of_game == False:
         print(f"You have: {user_cards}")
         print(f"Computer has: {computer_cards}")
@@ -45,10 +59,12 @@ def main():
         hit_stay = input("Hit or stay?: ").lower()
         if hit_stay == 'hit':
             dealcards(user_cards)
+            calculate_score()
             hit_stay = ''
             continue
         else: break
         
 
-main()
+if __name__ == "__main__":
+    main()
 
