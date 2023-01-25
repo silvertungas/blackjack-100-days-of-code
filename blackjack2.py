@@ -8,12 +8,20 @@ def dealcards(deal_to, amount=1):
     for nrOfCards in range(0, amount):
         deal_to.append(random.choice(cards))
 
-def calculate_score():
+def show_cards():
     user_total = sum(user_cards)
     computer_total = sum(computer_cards)
+    return user_total, computer_total
+
+def calculate_score():
+
+    user_total = show_cards()[0]
+    computer_total = show_cards()[1]
+
+    global end_of_game
 
     if computer_total == 21:
-        end_of_game == True
+        end_of_game = True
         print("Computer blackjack!")
         return end_of_game
     elif user_total == 21:
@@ -23,7 +31,12 @@ def calculate_score():
     
     if user_total > 21:
         end_of_game = True
-        print("Bust!")
+        print("Player bust, computer wins!")
+        return end_of_game
+
+    elif computer_total > 21:
+        end_of_game = True
+        print("Computer bust, player wins!")
         return end_of_game
     
     return user_total, computer_total
@@ -40,31 +53,50 @@ def calculate_score():
 
 def compare():
     results = calculate_score()
-    user = results[0]
-    computer = results[1]
-    
+    try: 
+        user = results[0]
+        computer = results[1]
+    except: return
 
+    if user < 21 and computer < 21:
+        if user > computer:
+            end_of_game = True
+            return print("User wins!"), end_of_game
+        else:
+            end_of_game = True
+            return print("Computer wins!"), end_of_game
+    if user == computer:
+        end_of_game = True
+        return print("Draw!"), end_of_game
+
+    
     
 
 def main():
     dealcards(computer_cards, 2)
     dealcards(user_cards, 2)
-    compare()
-    print(end_of_game)
     while end_of_game == False:
         print(f"You have: {user_cards}")
         print(f"Computer has: {computer_cards}")
-        calculate_score()
+        if calculate_score() == True:
+            continue
+        
 
         hit_stay = input("Hit or stay?: ").lower()
         if hit_stay == 'hit':
             dealcards(user_cards)
-            calculate_score()
-            hit_stay = ''
-            continue
-        else: break
+            calculate_score()         
+        elif hit_stay == 'stay': #computers turn to get cards
+            while calculate_score()[1] < 17:
+                dealcards(computer_cards)
+                compare()
+
         
 
-if __name__ == "__main__":
+
+main()
+play_again = input("Play again? y/n ").lower()
+if play_again == 'y':
     main()
+else: exit()
 
